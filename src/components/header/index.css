@@ -1,0 +1,10 @@
+.dragable-header {
+    -webkit-app-region: drag;
+    height: 30px;
+    background-color: #2196f3;
+}
+.header-btn-group {
+    -webkit-app-region: no-drag;
+    float: right;
+    color: #fff;
+}
