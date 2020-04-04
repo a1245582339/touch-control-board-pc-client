@@ -2,6 +2,7 @@
 exports.__esModule = true;
 var electron_1 = require("electron");
 var path = require("path");
+var index_1 = require("./server/index");
 var mainWindow = null, tray = null;
 //判断命令行脚本的第二参数是否含--debug
 var debug = /--debug/.test(process.argv[2]);
@@ -30,14 +31,13 @@ function createWindow() {
     mainWindow.loadURL("http://localhost:3000/");
     // mainWindow.loadURL(path.join('file://', __dirname, '/build/index.html'));
     //接收渲染进程的信息
-    var ipc = require('electron').ipcMain;
-    ipc.on('min', function () {
+    electron_1.ipcMain.on('min', function () {
         mainWindow.minimize();
     });
-    ipc.on('max', function () {
+    electron_1.ipcMain.on('max', function () {
         mainWindow.maximize();
     });
-    ipc.on('close', function () {
+    electron_1.ipcMain.on('close', function () {
         mainWindow.hide();
         mainWindow.setSkipTaskbar(true);
     });
@@ -59,6 +59,7 @@ makeSingleInstance();
 //app主进程的事件和方法
 electron_1.app.on('ready', function () {
     createWindow();
+    index_1["default"]();
 });
 electron_1.app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {
