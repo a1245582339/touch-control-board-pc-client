@@ -1,10 +1,9 @@
 import * as io from 'socket.io-client'
+let socket = io.connect('ws://localhost:3001', {
+    reconnectionAttempts: 10,
+    query: {}
+})
 const createSocket = () => {
-    const socket = io.connect('ws://localhost:3001', {
-        reconnectionAttempts: 10,
-        query: {
-        }
-    })
     socket.on('connect', function () {
         console.log('connect')
         socket.on('message', (msg: any) => {
@@ -12,4 +11,4 @@ const createSocket = () => {
         });
     });
 }
-export default createSocket
+export default { createSocket, socket }

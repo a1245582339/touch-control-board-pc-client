@@ -3,11 +3,12 @@ exports.__esModule = true;
 var socket = require("socket.io");
 var ip_1 = require("./utils/ip");
 var createSocketServer = function () {
-    var io = socket(3001);
+    var port = 3005;
+    var io = socket(port);
     var ip = ip_1["default"]();
     io.on('connection', function (socket) {
         console.log('connection');
-        socket.emit('message', ip);
+        socket.emit('message', "ws://" + ip + ":" + port);
         socket.on('message', function (data) {
             console.log(123);
         });

@@ -2,12 +2,14 @@
 import * as robot from "robotjs";
 import * as socket from 'socket.io'
 import getIPAdress from './utils/ip'
+
 const createSocketServer = () => {
-	const io = socket(3001);
+	const port = 3005
+	const io = socket(port);
 	const ip = getIPAdress()
 	io.on('connection', function (socket) {
 		console.log('connection')
-		socket.emit('message', ip)
+		socket.emit('message', `ws://${ip}:${port}`)
 		socket.on('message', data => {
 			console.log(123)
 		})
