@@ -14,6 +14,10 @@ function makeSingleInstance() {
         }
     })
 }
+function openDevTools() {
+    mainWindow.webContents.openDevTools();
+    require('devtron').install();
+}
 function createWindow() {
     const windowOptions = {
         width: 1000,
@@ -25,7 +29,7 @@ function createWindow() {
     };
     mainWindow = new BrowserWindow(windowOptions);
     mainWindow.loadURL("http://localhost:3000/");
-    // mainWindow.loadURL(path.join('file://', __dirname, '/build/index.html'));
+    // mainWindow.loadURL(path.join('file://', process.cwd(), 'build/index.html'));
     //接收渲染进程的信息
     ipc.on('min', function () {
         mainWindow.minimize();
@@ -37,7 +41,8 @@ function createWindow() {
         mainWindow.hide();
         mainWindow.setSkipTaskbar(true);
     });
-    tray = new Tray(path.join(process.cwd(), 'public/favicon.ico'))
+    ipc.on('devtools', openDevTools);
+    tray = new Tray(path.join(process.cwd(), 'electron/assets/favicon.ico'))
     const contextMenu = Menu.buildFromTemplate([
         { label: '显示窗口', click: () => { mainWindow.show() } },
         { label: '断开连接' },
@@ -47,11 +52,8 @@ function createWindow() {
     tray.setContextMenu(contextMenu)
     tray.on('click', () => { mainWindow.show() })
     if (debug) {
-        mainWindow.webContents.openDevTools();
-        require('devtron').install();
+        openDevTools()
     }
-
-
 }
 makeSingleInstance();
 //app主进程的事件和方法

@@ -6,10 +6,10 @@ import getIPAdress from './utils/ip'
 const createSocketServer = () => {
 	const port = 3005
 	const io = socket(port);
-	const ip = getIPAdress()
+	const ips = getIPAdress()
 	io.on('connection', function (socket) {
 		console.log('connection')
-		socket.emit('message', `ws://${ip}:${port}`)
+		socket.emit('message', ips.map(item => ({ ...item, ws: `ws://${item.ip}:${port}` })))
 		socket.on('message', data => {
 			console.log(123)
 		})

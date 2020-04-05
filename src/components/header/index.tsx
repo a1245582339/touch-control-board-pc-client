@@ -11,10 +11,13 @@ const Header: React.FC = (props) => {
     const handleCloseWindow = () => {
         ipcRenderer.send('close')
     }
+    const handleOpenDevTools = () => {
+        ipcRenderer.send('devtools')
+    }
     return (
         <div className='dragable-header'>
             <div className='header-btn-group'>
-                <Button style={{ minWidth: 40 }} size="small" onClick={handleMiniWindow}>
+                <Button style={{ minWidth: 40 }} size="small" onClick={handleMiniWindow} onContextMenu={handleOpenDevTools}>
                     <MinimizeSharp style={{ color: '#fff' }} fontSize="small" />
                 </Button>
                 <Button style={{ minWidth: 40 }} size="small" onClick={handleCloseWindow}>
