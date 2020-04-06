@@ -1,32 +1,22 @@
-// Move the mouse across the screen as a sine wave.
-import * as robot from "robotjs";
-import * as socket from 'socket.io'
-import getIPAdress from './utils/ip'
+import * as Koa from 'koa'
+import createRouter from './router'
+import SocketManage from './socket'
+import * as http from 'http'
+// import getIPAdress from './utils/ip'
+
+// const ips = getIPAdress()
 
 const createSocketServer = () => {
-	const port = 3005
-	const io = socket(port);
-	const ips = getIPAdress()
-	io.on('connection', function (socket) {
-		console.log('connection')
-		socket.emit('message', ips.map(item => ({ ...item, ws: `ws://${item.ip}:${port}` })))
-		socket.on('message', data => {
-			console.log(123)
-		})
-	});
+	const app = new Koa()
+	const server = http.createServer(app.callback())
+	const wss = new SocketManage(server)
+	app.use(createRouter(wss).routes())
+	app.listen(3005)
+	console.log('app started at port 3005...');
+	// wsServer.on('connect', function (socket) {
+	// 	console.log('connectconnect')
+	// 	socket.send(JSON.stringify(ips.map(item => ({ ...item, ws: `ws://${item.ip}:${port}` }))))
+	// })
 }
 export default createSocketServer
 
-
-// Speed up the mouse.
-// robot.setMouseDelay(2);
-
-// var twoPI = Math.PI * 2.0;
-// var screenSize = robot.getScreenSize();
-// var height = (screenSize.height / 2) - 10;
-// var width = screenSize.width;
-
-// for (var x = 0; x < width; x++) {
-// 	let y = height * Math.sin((twoPI * x) / width) + height;
-// 	robot.moveMouse(x, y);
-// }

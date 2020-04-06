@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Tray, Menu, ipcMain as ipc } from 'electron'
 import * as path from 'path'
-import createSocketServer from './server/index'
+import createServer from './server'
 let mainWindow: any = null, tray = null;
 //判断命令行脚本的第二参数是否含--debug
 const debug = /--debug/.test(process.argv[2]);
@@ -59,7 +59,7 @@ makeSingleInstance();
 //app主进程的事件和方法
 app.on('ready', () => {
     createWindow();
-    createSocketServer()
+    createServer()
 });
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {

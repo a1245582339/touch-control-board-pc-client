@@ -1,6 +1,3 @@
-import * as io from 'socket.io-client'
-let socket = io.connect('ws://localhost:3005', {
-    reconnectionAttempts: 10,
-    query: {}
-})
-export default socket
+import { w3cwebsocket as Ws } from 'websocket'
+const client = new Ws('ws://localhost:3005')
+export default client
